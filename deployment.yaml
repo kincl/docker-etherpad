@@ -1,0 +1,36 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: etherpad
+  labels:
+    app: etherpad
+spec:
+  replicas: 1
+  # Keep record of 2 revisions for rollback
+  revisionHistoryLimit: 2
+  template:
+    metadata:
+      labels:
+        app: etherpad
+    spec:
+      containers:
+      - name: etherpad
+        image: kincl/etherpad:latest
+        ports: 
+        - containerPort: 9001
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: etherpad
+  labels:
+    app: etherpad
+spec:
+  ports:
+    - name: http
+      port: 9001
+      targetPort: 9001
+  selector:
+    app: etherpad
+  type: NodePort
+
