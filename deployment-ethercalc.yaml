@@ -17,7 +17,7 @@ spec:
       - name: ethercalc
         image: audreyt/ethercalc:latest
         ports: 
-        - containerPort: 80
+        - containerPort: 8000
 ---
 kind: Service
 apiVersion: v1
@@ -28,9 +28,41 @@ metadata:
 spec:
   ports:
     - name: http
-      port: 80
-      targetPort: 80
+      port: 8000
+      targetPort: 8000
   selector:
     app: ethercalc
   type: NodePort
-
+---
+apiVersion: extensions/v1beta1
+kind: ReplicaSet
+metadata:
+  name: redis
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: redis
+    spec:
+      containers:
+      - name: redis
+        image: redis:latest
+        command:
+        - redis-server 
+        - --appendonly yes
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: redis
+  labels:
+    app: redis
+spec:
+  ports:
+    - name: redis
+      port: 6379
+      targetPort: 6379
+  selector:
+    app: redis
+  type: ClusterIP
