@@ -1,0 +1,36 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: ethercalc
+  labels:
+    app: ethercalc
+spec:
+  replicas: 1
+  # Keep record of 2 revisions for rollback
+  revisionHistoryLimit: 2
+  template:
+    metadata:
+      labels:
+        app: ethercalc
+    spec:
+      containers:
+      - name: ethercalc
+        image: audreyt/ethercalc:latest
+        ports: 
+        - containerPort: 80
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: ethercalc
+  labels:
+    app: ethercalc
+spec:
+  ports:
+    - name: http
+      port: 80
+      targetPort: 80
+  selector:
+    app: ethercalc
+  type: NodePort
+
