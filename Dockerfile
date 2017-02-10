@@ -6,8 +6,8 @@ RUN yum update -y && yum install -y gzip git curl python openssl-devel && yum gr
 
 RUN mkdir /opt/etherpad && git clone https://github.com/ether/etherpad-lite.git /opt/etherpad
 
-
-COPY settings.json /opt/etherpad/settings.json
+VOLUME /opt/etherpad-lite/var
+RUN ln -s var/settings.json settings.json
 
 RUN useradd etherpad
 RUN chown -R etherpad /opt/etherpad
