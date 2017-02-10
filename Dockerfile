@@ -15,9 +15,7 @@ WORKDIR /opt/etherpad
 VOLUME /opt/etherpad/etc
 RUN ln -sf etc/settings.json settings.json
 
-npm install ep_adminpads
-npm install ep_align
-npm install ep_headings
+RUN npm install ep_adminpads && npm install ep_align && npm install ep_headings
 
 EXPOSE 9001
 USER etherpad
