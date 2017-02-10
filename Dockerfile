@@ -6,11 +6,8 @@ RUN yum update -y && yum install -y gzip git curl python openssl-devel && yum gr
 
 RUN mkdir /opt/etherpad && git clone https://github.com/ether/etherpad-lite.git /opt/etherpad
 
-EXPOSE 9001
-
 RUN useradd etherpad
 RUN chown -R etherpad /opt/etherpad
-USER etherpad
 
 RUN su - etherpad -c /opt/etherpad/bin/installDeps.sh
 
@@ -22,4 +19,6 @@ npm install ep_adminpads
 npm install ep_align
 npm install ep_headings
 
+EXPOSE 9001
+USER etherpad
 CMD /opt/etherpad/bin/run.sh
