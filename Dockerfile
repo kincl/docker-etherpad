@@ -8,14 +8,14 @@ RUN mkdir /opt/etherpad && git clone https://github.com/ether/etherpad-lite.git 
 
 WORKDIR /opt/etherpad
 
-VOLUME /opt/etherpad/var
+VOLUME /opt/etherpad/etc
 
 RUN useradd etherpad
 RUN chown -R etherpad /opt/etherpad
 
 RUN su - etherpad -c /opt/etherpad/bin/installDeps.sh
 
-RUN ln -sf var/settings.json settings.json
+RUN ln -sf etc/settings.json settings.json
 
 USER etherpad
 EXPOSE 9001
